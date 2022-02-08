@@ -1,0 +1,17 @@
+{
+  "docker": {
+    "images": [
+      {
+        "name": "php",
+        "template": "php/Dockerfile.twig",
+        "source": "php",
+        "versions": [
+          "7.4"
+        ],
+        "variants": [
+          "alpine"
+        ]
+      }
+    ]
+  }
+}
