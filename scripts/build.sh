@@ -20,7 +20,7 @@ for image in $images; do
       then
         tagName="rem42/circleci-docker-php:$version-$variant"
         docker build -t "$tagName-latest" -t "$tagName-$(date +'%Y%m%d')" --label "$tagName-$(date +'%Y%m%d')" - < "$path"
-        docker push -t "$tagName-latest" -t "$tagName-$(date +'%Y%m%d')"
+        docker push rem42/circleci-docker-php --all-tags
       fi
     done
   done
