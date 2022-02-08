@@ -5,11 +5,11 @@ MAINTAINER {{ maintainer }}
 # Install custom extensions
 {% if variant == 'alpine' %}
 RUN apk upgrade --update && \
-    apk add --no-cache sqlite git openssh zip && \
+    apk add --no-cache sqlite git openssh zip make && \
     apk add --no-cache --virtual .build-deps libxml2-dev sqlite-dev curl-dev libzip-dev libpng-dev
 {% else %}
 RUN apt-get update && apt-get install -y \
-    libsqlite3-dev libzip-dev libpng-dev libgd3
+    libsqlite3-dev libzip-dev libpng-dev libgd3 make
 {% endif %}
 
 RUN docker-php-ext-install zip bcmath sockets pdo pdo_mysql gd
