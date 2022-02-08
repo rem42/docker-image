@@ -69,6 +69,7 @@ jobs:
     needs: create
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix: ${{fromJson(needs.create.outputs.matrix)}}
     steps:
       - name: checkout repo
