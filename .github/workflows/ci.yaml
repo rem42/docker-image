@@ -62,8 +62,7 @@ jobs:
     needs: create
     runs-on: ubuntu-latest
     strategy:
-      matrix:
-        package: ${{ fromJson(needs.create.outputs.matrix) }}
+      matrix: ${{ fromJson(needs.create.outputs.matrix) }}
     steps:
       - name: checkout repo
         uses: actions/checkout@v2
