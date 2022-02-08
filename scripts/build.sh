@@ -19,8 +19,8 @@ for image in $images; do
       if [ -f "$path" ]
       then
         tagName="rem42/circleci-docker-php:$version-$variant"
-        docker build -t "$tagName:latest" -t "$tagName:$(date +'%Y%m%d')" --label "$tagName:$(date +'%Y%m%d')" - < "$path"
-        docker push -t "$tagName:latest" -t "$tagName:$(date +'%Y%m%d')"
+        docker build -t "$tagName:latest" -t "$tagName-$(date +'%Y%m%d')" --label "$tagName-$(date +'%Y%m%d')" - < "$path"
+        docker push -t "$tagName:latest" -t "$tagName-$(date +'%Y%m%d')"
       fi
     done
   done
