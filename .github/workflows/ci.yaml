@@ -9,6 +9,9 @@ jobs:
   create:
     runs-on: ubuntu-latest
     steps:
+      - name: Install json2yaml
+        run: |
+          sudo npm install -g json2yaml
       - name: checkout repo
         uses: actions/checkout@v2
 
@@ -54,7 +57,10 @@ jobs:
 
       - id: set-matrix
         run: |
-            matrix=$(cat .render/matrix.json)
+            matrix='$(cat .render/matrix.json)'
+            echo $matrix
+            echo $matrix | jq .
+            echo $matrix | json2yaml
 
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
