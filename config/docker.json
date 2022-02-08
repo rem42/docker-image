@@ -6,10 +6,15 @@
         "template": "php/Dockerfile.twig",
         "source": "php",
         "versions": [
-          "7.4"
+          "7.4",
+          "8.0",
+          "8.1"
         ],
         "variants": [
-          "alpine"
+          "alpine",
+          "apache",
+          "cli",
+          "fpm"
         ]
       }
     ]
