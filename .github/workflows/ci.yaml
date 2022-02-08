@@ -50,7 +50,7 @@ jobs:
           path: .render/
 
       - id: set-matrix
-        run: echo "::set-output name=matrix::${{ fromJson(./.render/matrix.json) }}"
+        run: echo "::set-output name=matrix::${{ fromJson("./.render/matrix.json") }}"
 
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
