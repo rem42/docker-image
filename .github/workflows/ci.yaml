@@ -6,20 +6,12 @@ on:
       - 'main'
 
 jobs:
-  docker:
+  create:
     runs-on: ubuntu-latest
+    name: create templates
     steps:
       - name: checkout repo
         uses: actions/checkout@v2
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
-      - name: Login to DockerHub
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Setup PHP with PECL extension
         uses: shivammathur/setup-php@v2
         with:
@@ -47,6 +39,37 @@ jobs:
 
       - name: Generate docker template
         run: make generate-docker
+
+      - uses: actions/upload-artifact@master
+        with:
+          name: templates
+          path: .render/
+      - id: set-matrix
+        run: echo "::set-output name=matrix::${{ fromJson(./.render/matrix.json) }}"
+      outputs:
+        matrix: ${{ steps.set-matrix.outputs.matrix }}
+  docker:
+    needs: create
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        package: ${{ fromJson(needs.create.outputs.matrix) }}
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v2
+      - uses: actions/download-artifact@master
+        with:
+          name: templates
+          path: .render/
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
       # —— Bash ——————————————————————————————————————————————————————————
       - name: Build docker image
-        run: make build-docker
+        run: make build-one-docker ${{ matrix.versions }} ${{ matrix.variants }}

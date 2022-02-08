@@ -11,3 +11,6 @@ generate-docker:
 
 build-docker:
 	./scripts/build.sh
+
+build-one-docker:
+	./scripts/build_one.sh
