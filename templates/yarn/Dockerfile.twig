@@ -13,7 +13,7 @@ RUN apt-get update && apt-get install -y \
 # install chrome
 
 RUN cd && wget -O google-chrome-stable_current_amd64.deb -t 5 "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb" \
-    && (sudo dpkg -i google-chrome-stable_current_amd64.deb || apt-get -fy install)  \
+    && (dpkg -i google-chrome-stable_current_amd64.deb || apt-get -fy install)  \
     && rm -rf google-chrome-stable_current_amd64.deb \
     && sed -i 's|HERE/chrome"|HERE/chrome" --disable-setuid-sandbox --no-sandbox|g' \
     "/opt/google/chrome/google-chrome" \
