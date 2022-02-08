@@ -2,8 +2,6 @@ FROM {{ source }}:{{ version }}-{{ variant }}
 
 MAINTAINER {{ maintainer }}
 
-LABEL {{ label }}
-
 # Install custom extensions
 {% if variant == 'alpine' %}
 RUN apk upgrade --update && \

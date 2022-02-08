@@ -32,7 +32,6 @@ class DockerGenerateCommand extends Command
                         'version' => $version,
                         'variant' => $variant,
                         'maintainer' => 'Rémy BRUYERE <me@remy.ovh>',
-                        'label' => $image['name'].'/'.$variant.'-'.$variant,
                     ]);
                     $name = [
                         $image['name'],
