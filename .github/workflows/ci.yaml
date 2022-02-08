@@ -8,15 +8,17 @@ on:
 jobs:
   create:
     runs-on: ubuntu-latest
-    name: create templates
     steps:
       - name: checkout repo
         uses: actions/checkout@v2
+
       - name: Setup PHP with PECL extension
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.1'
+
       #—— Composer 🧙‍️ —————————————————————————————————————————————————————————
+
       - name: Validate composer.json and composer.lock
         run: composer validate
 
@@ -33,7 +35,9 @@ jobs:
 
       - name: Install Composer dependencies
         run: make install
+
       # —— Symfony 🎵 ——————————————————————————————————————————————————————————
+
       - name: Check Symfony requirements
         run: vendor/bin/requirements-checker
 
@@ -44,10 +48,12 @@ jobs:
         with:
           name: templates
           path: .render/
+
       - id: set-matrix
         run: echo "::set-output name=matrix::${{ fromJson(./.render/matrix.json) }}"
-      outputs:
-        matrix: ${{ steps.set-matrix.outputs.matrix }}
+
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
   docker:
     needs: create
     runs-on: ubuntu-latest
