@@ -1,4 +1,6 @@
 {
+    "name": "rem42/docker-image",
+    "description": "easily create dockerfile from template",
     "type": "project",
     "license": "proprietary",
     "minimum-stability": "stable",
