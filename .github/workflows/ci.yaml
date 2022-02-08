@@ -44,6 +44,9 @@ jobs:
       - name: Generate docker template
         run: make generate-docker
 
+      - name: Generate matrix json file
+        run: make generate-matrix
+
       - uses: actions/upload-artifact@master
         with:
           name: templates
@@ -53,6 +56,8 @@ jobs:
         run: |
             matrix=$(cat .render/matrix.json)
 
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
   docker:
     needs: create
     runs-on: ubuntu-latest
