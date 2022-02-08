@@ -3,6 +3,7 @@
 namespace App\Command;
 
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Twig\Environment;
@@ -12,19 +13,25 @@ class DockerGenerateCommand extends Command
     protected static $defaultName = 'app:docker:generate';
 
     public function __construct(
-        protected string $configFile,
-        protected string $renderDir,
+        protected string      $configPath,
+        protected string      $renderDir,
         protected Environment $twig
     ) {
         parent::__construct();
     }
 
+    protected function configure()
+    {
+        $this->addArgument('type', InputArgument::REQUIRED, 'Choose between php|yarn');
+    }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $configs = json_decode(file_get_contents($this->configFile), true, 512, JSON_THROW_ON_ERROR);
+        $pathFile = $this->configPath.'/'.$input->getArgument('type').'.json';
 
-        foreach ($configs['docker']['images'] as $image) {
+        $configs = json_decode(file_get_contents($pathFile), true, 512, JSON_THROW_ON_ERROR);
+
+        foreach ($configs['images'] as $image) {
             foreach ($image['versions'] as $version) {
                 foreach ($image['variants'] as $variant) {
                     $file = $this->twig->render($image['template'], [

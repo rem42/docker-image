@@ -25,10 +25,10 @@ services:
 
     App\Command\DockerGenerateCommand:
         arguments:
-            $configFile: '%kernel.project_dir%/config/docker.json'
+            $configFile: '%kernel.project_dir%/config/docker/php.json'
             $renderDir: '%kernel.project_dir%/.render'
 
     App\Command\GHAMatrixCommand:
         arguments:
-            $configFile: '%kernel.project_dir%/config/docker.json'
+            $configFile: '%kernel.project_dir%/config/docker/php.json'
             $renderDir: '%kernel.project_dir%/.render'

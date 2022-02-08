@@ -1,0 +1,18 @@
+{
+  "images": [
+    {
+      "name": "yarn",
+      "template": "yarn/Dockerfile.twig",
+      "source": "node",
+      "versions": [
+        "12",
+        "14",
+        "16"
+      ],
+      "variants": [
+        "alpine",
+        "slim"
+      ]
+    }
+  ]
+}
