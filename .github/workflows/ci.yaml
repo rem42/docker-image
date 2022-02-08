@@ -62,11 +62,27 @@ jobs:
             echo $matrix | jq .
             echo $matrix | json2yaml
             echo "::set-output name=matrix::$matrix"
+
+  check-matrix:
+    runs-on: ubuntu-latest
+    needs: create
+    steps:
+      - name: Install json2yaml
+        run: |
+          sudo npm install -g json2yaml
+
+      - name: Check matrix definition
+        run: |
+          matrix='${{ needs.create.outputs.matrix }}'
+          echo $matrix
+          echo $matrix | jq .
+          echo $matrix | json2yaml
+
   docker:
     needs: create
     runs-on: ubuntu-latest
     strategy:
-      matrix: ${{ fromJson(needs.create.outputs.matrix) }}
+      matrix: ${{fromJson(needs.create.outputs.matrix)}}
     steps:
       - name: checkout repo
         uses: actions/checkout@v2
