@@ -16,5 +16,5 @@ RUN docker-php-ext-install zip bcmath sockets pdo pdo_mysql gd
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 
 # INSTALL COMPOSER
-RUN curl -s https://getcomposer.org/installer | php
-RUN alias composer='php composer.phar'
+RUN curl -s https://getcomposer.org/installer | php -- --install-dir=/usr/bin/ --filename=composer
+RUN alias composer='php /usr/bin/composer'
