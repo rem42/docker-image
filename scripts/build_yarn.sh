@@ -4,7 +4,7 @@ RENDER_DIR="./.render/"
 version=$1
 variant=$2
 
-path="$RENDER_DIR/node.$version.$variant.Dockerfile"
+path="$RENDER_DIR/yarn.$version.$variant.Dockerfile"
 if [ -f "$path" ]
 then
   tagName="rem42/docker-yarn:$version-$variant"
