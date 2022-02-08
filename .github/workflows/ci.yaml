@@ -61,9 +61,7 @@ jobs:
             echo $matrix
             echo $matrix | jq .
             echo $matrix | json2yaml
-
-    outputs:
-      matrix: ${{ steps.set-matrix.outputs.matrix }}
+            echo "::set-output name=matrix::$matrix"
   docker:
     needs: create
     runs-on: ubuntu-latest
