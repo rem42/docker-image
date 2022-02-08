@@ -57,7 +57,7 @@ jobs:
 
       - id: set-matrix
         run: |
-            matrix='$(cat .render/matrix.json)'
+            matrix=$(cat .render/matrix.json)
             echo $matrix
             echo $matrix | jq .
             echo $matrix | json2yaml
