@@ -50,10 +50,9 @@ jobs:
           path: .render/
 
       - id: set-matrix
-        run: echo "::set-output name=matrix::${{ fromJson("./.render/matrix.json") }}"
+        run: |
+            matrix=$(cat .render/matrix.json)
 
-    outputs:
-      matrix: ${{ steps.set-matrix.outputs.matrix }}
   docker:
     needs: create
     runs-on: ubuntu-latest
