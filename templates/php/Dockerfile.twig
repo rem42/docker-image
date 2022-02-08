@@ -9,8 +9,12 @@ RUN apk upgrade --update && \
     apk add --no-cache --virtual .build-deps libxml2-dev sqlite-dev curl-dev libzip-dev libpng-dev
 {% else %}
 RUN apt-get update && apt-get install -y \
-    libsqlite3-dev libzip-dev libpng-dev libgd3 make
+    libsqlite3-dev libzip-dev libpng-dev libgd3 make curl
 {% endif %}
 
 RUN docker-php-ext-install zip bcmath sockets pdo pdo_mysql gd
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
+
+# INSTALL COMPOSER
+RUN curl -s https://getcomposer.org/installer | php
+RUN alias composer='php composer.phar'
