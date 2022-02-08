@@ -63,6 +63,8 @@ jobs:
             echo $matrix | json2yaml
             echo "::set-output name=matrix::$matrix"
 
+    outputs:
+      matrix: ${{ steps.create.outputs.matrix }}
   check-matrix:
     runs-on: ubuntu-latest
     needs: create
