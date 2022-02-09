@@ -54,13 +54,6 @@ class DockerGenerateCommand extends Command
             }
         }
 
-        if('yarn' === $type) {
-            file_put_contents(
-                $this->renderDir.'/local.conf',
-                file_get_contents($this->projectDir.'/local.conf')
-            );
-        }
-
         return Command::SUCCESS;
     }
 }
