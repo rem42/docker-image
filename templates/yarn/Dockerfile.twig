@@ -25,9 +25,7 @@ RUN apt-get install --no-install-recommends -y \
     fonts-arphic-uming \
     ttf-wqy-zenhei \
     ttf-wqy-microhei \
-    xfonts-wqy \
-    # clean up
-    && rm -rf /var/lib/apt/lists/*
+    xfonts-wqy
 
 # install chrome
 RUN cd && wget -O google-chrome-stable_current_amd64.deb -t 5 "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb" \
