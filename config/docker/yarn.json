@@ -4,6 +4,7 @@
       "name": "yarn",
       "template": "yarn/Dockerfile.twig",
       "source": "node",
+      "repository": "rem42/docker-yarn",
       "versions": [
         "12",
         "14",

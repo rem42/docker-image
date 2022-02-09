@@ -40,6 +40,7 @@ class GHAMatrixCommand extends Command
                 }
             }
             $matrix = [
+                'repository' => [$image['repository']],
                 'versions' => $image['versions'],
                 'variants' => [
                     ...$image['variants'],

@@ -3,15 +3,10 @@ FROM {{ source }}:{{ version }}-{{ variant }}
 MAINTAINER {{ maintainer }}
 
 # Install custom extensions
-{% if variant == 'alpine' %}
-RUN apk upgrade --update && \
-    apk add --no-cache git openssh zip make yarn
-{% else %}
 RUN apt-get update && apt-get install -y \
     make curl yarn wget zip git
-{% endif %}
 
-{% if variant != 'alpine' and option == 'chrome' %}
+{% if option == 'chrome' %}
 # install chrome
 RUN cd && wget -O google-chrome-stable_current_amd64.deb -t 5 "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb" \
     && (dpkg -i google-chrome-stable_current_amd64.deb || apt-get -fy install)  \

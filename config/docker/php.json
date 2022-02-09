@@ -4,6 +4,7 @@
       "name": "php",
       "template": "php/Dockerfile.twig",
       "source": "php",
+      "repository": "rem42/circleci-docker-php",
       "versions": [
         "7.4",
         "8.0.14",
