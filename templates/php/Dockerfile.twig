@@ -7,6 +7,8 @@ MAINTAINER {{ maintainer }}
 RUN apk upgrade --update && \
     apk add --no-cache sqlite git openssh zip make && \
     apk add --no-cache --virtual .build-deps libxml2-dev sqlite-dev curl-dev libzip-dev libpng-dev
+
+RUN rm -rf /var/cache/apk/*
 {% else %}
 RUN apt-get update && apt-get install -y \
     libsqlite3-dev libzip-dev libpng-dev libgd3 make curl

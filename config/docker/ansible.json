@@ -1,0 +1,15 @@
+{
+  "images": [
+    {
+      "name": "ansible",
+      "template": "ansible/Dockerfile.twig",
+      "source": "alpine",
+      "repository": "rem42/docker-ansible",
+      "versions": [
+        "latest",
+        "3.15",
+        "3.14"
+      ]
+    }
+  ]
+}

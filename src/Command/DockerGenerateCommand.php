@@ -23,7 +23,7 @@ class DockerGenerateCommand extends Command
 
     protected function configure()
     {
-        $this->addArgument('type', InputArgument::REQUIRED, 'Choose between php|yarn');
+        $this->addArgument('type', InputArgument::REQUIRED, 'Choose between ansible|php|yarn');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -35,6 +35,10 @@ class DockerGenerateCommand extends Command
 
         foreach ($configs['images'] as $image) {
             foreach ($image['versions'] as $version) {
+                if(!isset($image['variants'])) {
+                    $this->extracted($image['name'], $image['template'], $image['source'], $version);
+                    continue;
+                }
                 foreach ($image['variants'] as $variant) {
                     $this->extracted($image['name'], $image['template'], $image['source'], $version, $variant);
 
@@ -51,7 +55,7 @@ class DockerGenerateCommand extends Command
     }
 
 
-    protected function extracted(string $imageName, string $template, string $source, string $version, string $variant, ?string $option = null): void
+    protected function extracted(string $imageName, string $template, string $source, string $version, ?string $variant = null, ?string $option = null): void
     {
         $file = $this->twig->render($template, [
             'source' => $source,
@@ -60,12 +64,14 @@ class DockerGenerateCommand extends Command
             'maintainer' => 'Rémy BRUYERE <me@remy.ovh>',
             'option' => $option
         ]);
-        $variant = $option ? $variant.'-'.$option : $variant;
         $name = [
             $imageName,
             $version,
-            $variant,
         ];
+        if($variant) {
+            $variant = $option ? $variant.'-'.$option : $variant;
+            $name[] = $variant;
+        }
         $name[] = 'Dockerfile';
 
         file_put_contents($this->renderDir . '/' . implode('.', $name), $file);

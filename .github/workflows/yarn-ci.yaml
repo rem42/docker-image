@@ -83,4 +83,4 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       # —— Bash ——————————————————————————————————————————————————————————
       - name: Build docker image
-        run: ./scripts/build_one.sh ${{ matrix.repository }} ${{ matrix.versions }} ${{ matrix.variants }}
+        run: ./scripts/build_one.sh ${{ matrix.repository }} yarn ${{ matrix.versions }} ${{ matrix.variants }}

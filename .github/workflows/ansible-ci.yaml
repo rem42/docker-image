@@ -1,4 +1,4 @@
-name: php-ci
+name: ansible-ci
 
 on:
   push:
@@ -83,4 +83,4 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       # —— Bash ——————————————————————————————————————————————————————————
       - name: Build docker image
-        run: ./scripts/build_one.sh ${{ matrix.repository }} php ${{ matrix.versions }} ${{ matrix.variants }}
+        run: ./scripts/build_one.sh ${{ matrix.repository }} ansible ${{ matrix.versions }}
