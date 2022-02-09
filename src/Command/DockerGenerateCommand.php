@@ -36,24 +36,38 @@ class DockerGenerateCommand extends Command
         foreach ($configs['images'] as $image) {
             foreach ($image['versions'] as $version) {
                 foreach ($image['variants'] as $variant) {
-                    $file = $this->twig->render($image['template'], [
-                        'source' => $image['source'],
-                        'version' => $version,
-                        'variant' => $variant,
-                        'maintainer' => 'Rémy BRUYERE <me@remy.ovh>',
-                    ]);
-                    $name = [
-                        $image['name'],
-                        $version,
-                        $variant,
-                        'Dockerfile'
-                    ];
+                    $this->extracted($image['name'], $image['template'], $image['source'], $version, $variant);
 
-                    file_put_contents($this->renderDir.'/'.implode('.', $name), $file);
+                    if(isset($image['options'])) {
+                        foreach ($image['options'] as $option) {
+                            $this->extracted($image['name'], $image['template'], $image['source'], $version, $variant, $option);
+                        }
+                    }
                 }
             }
         }
 
         return Command::SUCCESS;
+    }
+
+
+    protected function extracted(string $imageName, string $template, string $source, string $version, string $variant, ?string $option = null): void
+    {
+        $file = $this->twig->render($template, [
+            'source' => $source,
+            'version' => $version,
+            'variant' => $variant,
+            'maintainer' => 'Rémy BRUYERE <me@remy.ovh>',
+            'option' => $option
+        ]);
+        $variant = $option ? $variant.'-'.$option : $variant;
+        $name = [
+            $imageName,
+            $version,
+            $variant,
+        ];
+        $name[] = 'Dockerfile';
+
+        file_put_contents($this->renderDir . '/' . implode('.', $name), $file);
     }
 }

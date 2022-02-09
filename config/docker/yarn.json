@@ -10,8 +10,10 @@
         "16"
       ],
       "variants": [
-        "alpine",
         "slim"
+      ],
+      "options": [
+        "chrome"
       ]
     }
   ]

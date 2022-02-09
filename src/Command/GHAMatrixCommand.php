@@ -14,7 +14,8 @@ class GHAMatrixCommand extends Command
     public function __construct(
         protected string $configPath,
         protected string $renderDir
-    ) {
+    )
+    {
         parent::__construct();
     }
 
@@ -25,16 +26,27 @@ class GHAMatrixCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $pathFile = $this->configPath.'/'.$input->getArgument('type').'.json';
+        $pathFile = $this->configPath . '/' . $input->getArgument('type') . '.json';
 
         $configs = json_decode(file_get_contents($pathFile), true, 512, JSON_THROW_ON_ERROR);
 
         foreach ($configs['images'] as $image) {
+            $optionsVariant = [];
+            if(isset($image['options'])) {
+                foreach ($image['options'] as $option) {
+                    foreach ($image['variants'] as $variant) {
+                        $optionsVariant[] = $variant . '-' . $option;
+                    }
+                }
+            }
             $matrix = [
                 'versions' => $image['versions'],
-                'variants' => $image['variants'],
+                'variants' => [
+                    ...$image['variants'],
+                    ...$optionsVariant,
+                ]
             ];
-            file_put_contents($this->renderDir.'/matrix.json', json_encode($matrix, JSON_THROW_ON_ERROR));
+            file_put_contents($this->renderDir . '/matrix.json', json_encode($matrix, JSON_THROW_ON_ERROR));
         }
 
         return Command::SUCCESS;
