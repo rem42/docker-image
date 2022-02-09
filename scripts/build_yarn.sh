@@ -8,6 +8,6 @@ path="$RENDER_DIR/yarn.$version.$variant.Dockerfile"
 if [ -f "$path" ]
 then
   tagName="rem42/docker-yarn:$version-$variant"
-  docker build --pull -t "$tagName-latest" -t "$tagName-$(date +'%Y%m%d')" --label "$tagName-$(date +'%Y%m%d')" - < "$path"
+  docker build --pull -t "$tagName-latest" -t "$tagName-$(date +'%Y%m%d')" --label "$tagName-$(date +'%Y%m%d')" -f "$path" .
   docker push rem42/docker-yarn --all-tags
 fi
