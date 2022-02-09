@@ -8,7 +8,11 @@ RUN apk upgrade --update && \
     apk add --no-cache git openssh zip make yarn chromium chromium-chromedriver
 {% else %}
 RUN apt-get update && apt-get install -y \
-    make curl yarn wget zip git ttf-freefont
+    make curl yarn wget zip git
+RUN apt-get install -y \
+    xvfb gtk2-engines-pixbuf
+RUN apt-get install -y \
+    xfonts-base xfonts-100dpi xfonts-75dpi xfonts-cyrillic xfonts-scalable
 
 # install chrome
 
