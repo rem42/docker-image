@@ -32,21 +32,23 @@ class GHAMatrixCommand extends Command
 
         foreach ($configs['images'] as $image) {
             $optionsVariant = [];
-            if(isset($image['options'])) {
-                foreach ($image['options'] as $option) {
-                    foreach ($image['variants'] as $variant) {
-                        $optionsVariant[] = $variant . '-' . $option;
-                    }
-                }
-            }
             $matrix = [
                 'repository' => [$image['repository']],
                 'versions' => $image['versions'],
-                'variants' => [
+            ];
+            if(isset($image['variants'])) {
+                if(isset($image['options'])) {
+                    foreach ($image['options'] as $option) {
+                        foreach ($image['variants'] as $variant) {
+                            $optionsVariant[] = $variant . '-' . $option;
+                        }
+                    }
+                }
+                $matrix['variants'] = [
                     ...$image['variants'],
                     ...$optionsVariant,
-                ]
-            ];
+                ];
+            }
             file_put_contents($this->renderDir . '/matrix.json', json_encode($matrix, JSON_THROW_ON_ERROR));
         }
 
