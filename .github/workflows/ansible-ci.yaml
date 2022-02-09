@@ -44,10 +44,10 @@ jobs:
         run: vendor/bin/requirements-checker
 
       - name: Generate docker template
-        run: bin/console app:docker:generate php
+        run: bin/console app:docker:generate ansible
 
       - name: Generate matrix json file
-        run: bin/console app:gha:matrix php
+        run: bin/console app:gha:matrix ansible
 
       - uses: actions/upload-artifact@master
         with:
