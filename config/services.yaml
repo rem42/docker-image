@@ -27,6 +27,7 @@ services:
         arguments:
             $configPath: '%kernel.project_dir%/config/docker'
             $renderDir: '%kernel.project_dir%/.render'
+            $projectDir: '%kernel.project_dir%'
 
     App\Command\GHAMatrixCommand:
         arguments:

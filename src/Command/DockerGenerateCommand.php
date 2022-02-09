@@ -15,6 +15,7 @@ class DockerGenerateCommand extends Command
     public function __construct(
         protected string      $configPath,
         protected string      $renderDir,
+        protected string      $projectDir,
         protected Environment $twig
     ) {
         parent::__construct();
@@ -27,7 +28,8 @@ class DockerGenerateCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $pathFile = $this->configPath.'/'.$input->getArgument('type').'.json';
+        $type = $input->getArgument('type');
+        $pathFile = $this->configPath.'/'.$type.'.json';
 
         $configs = json_decode(file_get_contents($pathFile), true, 512, JSON_THROW_ON_ERROR);
 
@@ -50,6 +52,13 @@ class DockerGenerateCommand extends Command
                     file_put_contents($this->renderDir.'/'.implode('.', $name), $file);
                 }
             }
+        }
+
+        if('yarn' === $type) {
+            file_put_contents(
+                $this->renderDir.'/local.conf',
+                file_get_contents($this->projectDir.'/local.conf')
+            );
         }
 
         return Command::SUCCESS;
