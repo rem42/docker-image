@@ -1,16 +1,12 @@
 FROM {{ source }}:{{ version }}-{{ variant }}
 
-MAINTAINER "{{ maintainer }}"
+MAINTAINER "{{ maintainer|raw }}"
 
 # Install custom extensions
 RUN apt-get update && apt-get install -y \
     make curl yarn wget zip git
 
 {% if option == 'chrome' %}
-# Cypress dependencies
-RUN apt-get install -y libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb sudo
-
-RUN yarn global add cypress
 
 # install chrome
 RUN cd && wget -O google-chrome-stable_current_amd64.deb -t 5 "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb" \
@@ -30,6 +26,12 @@ RUN CHROME_VERSION="$(google-chrome --version)" \
     && mv chromedriver /usr/local/bin/chromedriver \
     && chmod +x /usr/local/bin/chromedriver \
     && chromedriver --version
+{% endif %}
+{% if option == 'electron' %}
+# Cypress dependencies
+RUN apt-get install -y libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb sudo
+
+RUN yarn global add cypress
 {% endif %}
 
 RUN rm -rf /var/lib/apt/lists/*

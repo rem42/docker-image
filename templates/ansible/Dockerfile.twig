@@ -1,6 +1,6 @@
 FROM {{ source }}:{{ version }}
 
-MAINTAINER "{{ maintainer }}"
+MAINTAINER "{{ maintainer|raw }}"
 
 # Install custom extensions
 RUN apk upgrade --update && \

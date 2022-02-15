@@ -14,7 +14,8 @@
         "slim"
       ],
       "options": [
-        "chrome"
+        "chrome",
+        "electron"
       ]
     }
   ]

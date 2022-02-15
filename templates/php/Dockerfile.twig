@@ -1,6 +1,6 @@
 FROM {{ source }}:{{ version }}-{{ variant }}
 
-MAINTAINER "{{ maintainer }}"
+MAINTAINER "{{ maintainer|raw }}"
 
 # Install custom extensions
 {% if variant == 'alpine' %}
