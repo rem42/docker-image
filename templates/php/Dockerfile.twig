@@ -1,6 +1,6 @@
 FROM {{ source }}:{{ version }}-{{ variant }}
 
-MAINTAINER {{ maintainer }}
+MAINTAINER "{{ maintainer }}"
 
 # Install custom extensions
 {% if variant == 'alpine' %}
@@ -22,6 +22,8 @@ ENV DOCKERIZE_VERSION v0.6.1
 RUN wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
     && tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
     && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
+
+RUN rm -rf /var/lib/apt/lists/*
 {% endif %}
 
 RUN docker-php-ext-install zip bcmath sockets pdo pdo_mysql gd
