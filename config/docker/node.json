@@ -1,10 +1,10 @@
 {
   "images": [
     {
-      "name": "yarn",
-      "template": "yarn/Dockerfile.twig",
+      "name": "node",
+      "template": "node/Dockerfile.twig",
       "source": "node",
-      "repository": "rem42/docker-yarn",
+      "repository": "rem42/docker-node",
       "versions": [
         "12",
         "14",

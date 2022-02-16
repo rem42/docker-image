@@ -1,0 +1,35 @@
+name: ci
+
+on:
+  pull_request:
+
+jobs:
+  php:
+    if: ${{ contains( github.event.pull_request.labels.*.name, 'preview/php' ) }}
+    uses: rem42/docker-image/.github/workflows/image-docker.yaml@main
+    with:
+      language: php
+      pr_number: ${{ github.event.pull_request.number }}
+    secrets:
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+
+  node:
+    if: ${{ contains( github.event.pull_request.labels.*.name, 'preview/node' ) }}
+    uses: rem42/docker-image/.github/workflows/image-docker.yaml@main
+    with:
+      language: node
+      pr_number: ${{ github.event.pull_request.number }}
+    secrets:
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+
+  ansible:
+    if: ${{ contains( github.event.pull_request.labels.*.name, 'preview/ansible' ) }}
+    uses: rem42/docker-image/.github/workflows/image-docker.yaml@main
+    with:
+      language: ansible
+      pr_number: ${{ github.event.pull_request.number }}
+    secrets:
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
