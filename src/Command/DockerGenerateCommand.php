@@ -23,7 +23,7 @@ class DockerGenerateCommand extends Command
 
     protected function configure()
     {
-        $this->addArgument('type', InputArgument::REQUIRED, 'Choose between ansible|php|yarn');
+        $this->addArgument('type', InputArgument::REQUIRED, 'Choose between ansible|php|node');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
