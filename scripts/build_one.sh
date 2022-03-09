@@ -30,9 +30,12 @@ then
   exit 0
 fi
 
+export DOCKER_BUILDKIT=0
+export COMPOSE_DOCKER_CLI_BUILD=0
+
 if test "$PR_NUMBER"
 then
-  docker buildx build --pull --push --platform linux/amd64,linux/arm64,darwin/amd64 --tag "$tagName" --label "$tagName" --file "$path" --output type=registry -
+  docker buildx build --pull --push --platform linux/amd64,linux/arm64,darwin/amd64 --tag "$tagName" --label "$tagName" --file "$path" -o type=registryy -
 else
-  docker buildx build --pull --push --platform linux/amd64,linux/arm64,darwin/amd64 --tag "$tagName-latest" --tag "$tagName-$(date +'%Y%m%d')" --label "$tagName-$(date +'%Y%m%d')" --file "$path" -
+  docker buildx build --pull --push --platform linux/amd64,linux/arm64,darwin/amd64 --tag "$tagName-latest" --tag "$tagName-$(date +'%Y%m%d')" --label "$tagName-$(date +'%Y%m%d')" --file "$path" -o type=registry -
 fi
