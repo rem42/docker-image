@@ -32,7 +32,7 @@ fi
 
 if test "$PR_NUMBER"
 then
-  docker buildx build --push --platform linux/amd64,linux/arm64,darwin/amd64 --tag "$tagName" --label "$tagName" - < "$path"
+  docker buildx build --pull --push --platform linux/amd64,linux/arm64,darwin/amd64 --tag "$tagName" --label "$tagName" --file "$path"
 else
-  docker build build --push --platform linux/amd64,linux/arm64,darwin/amd64 --tag "$tagName-latest" --tag "$tagName-$(date +'%Y%m%d')" --label "$tagName-$(date +'%Y%m%d')" - < "$path"
+  docker buildx build --pull --push --platform linux/amd64,linux/arm64,darwin/amd64 --tag "$tagName-latest" --tag "$tagName-$(date +'%Y%m%d')" --label "$tagName-$(date +'%Y%m%d')" --file "$path"
 fi
