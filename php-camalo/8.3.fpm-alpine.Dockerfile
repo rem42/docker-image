@@ -39,7 +39,7 @@ RUN apk upgrade --update && \
 
 RUN docker-php-ext-install zip bcmath pdo_mysql gd intl calendar soap sysvmsg sysvsem sysvshm && \
     pecl install xdebug amqp && \
-    docker-php-ext-enable xdebug amqp soap http && \
+    docker-php-ext-enable xdebug amqp soap && \
     docker-php-ext-configure intl
 
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
