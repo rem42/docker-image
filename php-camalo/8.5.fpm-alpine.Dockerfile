@@ -37,9 +37,9 @@ RUN apk upgrade --update && \
     apk add --no-cache --virtual .build-deps libxml2-dev rabbitmq-c-dev curl-dev libzip-dev libpng-dev icu-dev libjpeg-turbo-dev libwebp-dev zlib-dev libxpm-dev $PHPIZE_DEPS && \
     apk add --update linux-headers
 
-RUN docker-php-ext-install zip bcmath pdo_mysql gd intl calendar soap sysvmsg sysvsem sysvshm http && \
+RUN docker-php-ext-install zip bcmath pdo_mysql gd intl calendar soap sysvmsg sysvsem sysvshm && \
     pecl install xdebug amqp && \
-    docker-php-ext-enable xdebug amqp soap http && \
+    docker-php-ext-enable xdebug amqp soap && \
     docker-php-ext-configure intl
 
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
