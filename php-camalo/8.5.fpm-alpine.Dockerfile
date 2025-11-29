@@ -43,7 +43,7 @@ RUN docker-php-ext-install zip bcmath pdo_mysql gd intl calendar soap sysvmsg sy
     docker-php-ext-configure intl
 
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
-COPY symfony.ini $PHP_INI_DIR/conf.d/symfony.ini
+COPY php-camalo/symfony.ini $PHP_INI_DIR/conf.d/symfony.ini
 
 ENV LANG fr_FR.UTF-8
 ENV LC_ALL fr_FR.UTF-8
