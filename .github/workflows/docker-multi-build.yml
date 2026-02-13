@@ -12,7 +12,6 @@ on:
         options:
           - all
           # PHP - FPM
-          - 'rem42/php-camalo:8.3-fpm-alpine-latest'
           - 'rem42/php-camalo:8.4-fpm-alpine-latest'
           - 'rem42/php-camalo:8.5-fpm-alpine-latest'
 
@@ -25,7 +24,6 @@ jobs:
       matrix:
         dockerfile:
           # PHP - FPM
-          - { path: './php-camalo/8.3.fpm-alpine.Dockerfile', tag: 'rem42/php-camalo:8.3-fpm-alpine-latest', platforms: 'linux/amd64,linux/arm64' }
           - { path: './php-camalo/8.4.fpm-alpine.Dockerfile', tag: 'rem42/php-camalo:8.4-fpm-alpine-latest', platforms: 'linux/amd64,linux/arm64' }
           - { path: './php-camalo/8.5.fpm-alpine.Dockerfile', tag: 'rem42/php-camalo:8.5-fpm-alpine-latest', platforms: 'linux/amd64,linux/arm64' }
 
