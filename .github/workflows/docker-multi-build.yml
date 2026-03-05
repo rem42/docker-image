@@ -55,7 +55,7 @@ jobs:
             github.event.inputs.image_tag == 'all' ||
             github.event.inputs.image_tag == matrix.dockerfile.tag
           ))
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: .
           file: ${{ matrix.dockerfile.path }}
