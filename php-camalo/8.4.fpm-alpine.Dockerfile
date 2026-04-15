@@ -34,13 +34,16 @@ COPY --from=wkhtmltopdf /bin/libwkhtmltox* /usr/local/bin/
 # Install dependencies for PHP
 RUN apk upgrade --update && \
     apk add --no-cache libssl3 git openssh make openssl bash zip mysql-client libpng libzip icu rabbitmq-c icu-data-full gcompat libxslt && \
-    apk add --no-cache --virtual .build-deps libxml2-dev rabbitmq-c-dev curl-dev libzip-dev libpng-dev icu-dev libjpeg-turbo-dev libwebp-dev zlib-dev libxpm-dev libxslt-dev $PHPIZE_DEPS && \
+    apk add --no-cache --virtual .build-deps libxml2-dev rabbitmq-c-dev curl-dev libzip-dev libpng-dev icu-dev libjpeg-turbo-dev libwebp-dev zlib-dev freetype-dev libxpm-dev libxslt-dev $PHPIZE_DEPS && \
     apk add --update linux-headers
 
 RUN docker-php-ext-install zip bcmath pdo_mysql gd intl calendar soap sysvmsg sysvsem sysvshm ftp xsl && \
     pecl install xdebug amqp && \
     docker-php-ext-enable xdebug amqp soap && \
     docker-php-ext-configure intl
+
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
+    && docker-php-ext-install -j$(nproc) gd
 
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 COPY php-camalo/symfony.ini $PHP_INI_DIR/conf.d/symfony.ini
