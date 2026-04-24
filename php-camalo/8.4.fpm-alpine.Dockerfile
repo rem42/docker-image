@@ -6,6 +6,7 @@ FROM php:8.4-fpm-alpine
 RUN apk add --no-cache \
     bash \
     ca-certificates \
+    curl \
     fontconfig \
     freetype \
     gcompat \
@@ -93,11 +94,9 @@ RUN mkdir -p /root/.ssh \
     && ssh-keyscan github.com >> /root/.ssh/known_hosts
 
 # Symfony CLI (latest stable)
-ARG TARGETARCH
-
-RUN wget https://github.com/symfony-cli/symfony-cli/releases/latest/download/symfony_linux_${TARGETARCH} \
-    -O /usr/local/bin/symfony \
-    && chmod +x /usr/local/bin/symfony
+COPY --link \
+    --from=ghcr.io/symfony-cli/symfony-cli:latest \
+    /usr/local/bin/symfony /usr/local/bin/symfony
 
 ENV LANG=fr_FR.UTF-8
 ENV LC_ALL=fr_FR.UTF-8
