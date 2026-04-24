@@ -1,71 +1,104 @@
-FROM surnet/alpine-wkhtmltopdf:3.21.2-0.12.6-full as wkhtmltopdf
+FROM surnet/alpine-wkhtmltopdf:3.21.2-0.12.6-full AS wkhtmltopdf
+
 FROM php:8.4-fpm-alpine
 
-# Install dependencies for wkhtmltopdf
+# Runtime dependencies
 RUN apk add --no-cache \
-  libstdc++ \
-  libx11 \
-  libxrender \
-  libxext \
-  libssl3 \
-  ca-certificates \
-  fontconfig \
-  freetype \
-  ttf-dejavu \
-  ttf-droid \
-  ttf-freefont \
-  ttf-liberation \
-&& apk add --no-cache --virtual .build-deps \
-  msttcorefonts-installer \
-\
-# Install microsoft fonts
-&& update-ms-fonts \
-&& fc-cache -f \
-\
-# Clean up when done
-&& rm -rf /tmp/* \
-&& apk del .build-deps
+    bash \
+    ca-certificates \
+    fontconfig \
+    freetype \
+    gcompat \
+    git \
+    icu \
+    icu-data-full \
+    libjpeg-turbo \
+    libpng \
+    libssl3 \
+    libstdc++ \
+    libwebp \
+    libx11 \
+    libxext \
+    libxrender \
+    libxslt \
+    libzip \
+    make \
+    mysql-client \
+    openssh \
+    openssl \
+    rabbitmq-c \
+    ttf-dejavu \
+    ttf-droid \
+    ttf-freefont \
+    ttf-liberation \
+    zip \
+    zlib
 
-# Copy wkhtmltopdf files from docker-wkhtmltopdf image
+# Microsoft fonts
+RUN apk add --no-cache --virtual .font-build-deps msttcorefonts-installer \
+    && update-ms-fonts \
+    && fc-cache -f \
+    && apk del .font-build-deps \
+    && rm -rf /tmp/* /var/cache/apk/*
+
+# wkhtmltopdf
 COPY --from=wkhtmltopdf /bin/wkhtmltopdf /usr/local/bin/wkhtmltopdf
 COPY --from=wkhtmltopdf /bin/wkhtmltoimage /usr/local/bin/wkhtmltoimage
 COPY --from=wkhtmltopdf /bin/libwkhtmltox* /usr/local/bin/
 
-# Install dependencies for PHP
-RUN apk upgrade --update && \
-    apk add --no-cache libssl3 git openssh make openssl bash zip mysql-client libpng libzip icu rabbitmq-c icu-data-full gcompat libxslt libjpeg-turbo-dev libwebp-dev zlib-dev freetype-dev libzip-dev libpng-dev && \
-    apk add --no-cache --virtual .build-deps libxml2-dev rabbitmq-c-dev curl-dev icu-dev libxpm-dev libxslt-dev $PHPIZE_DEPS && \
-    apk add --update linux-headers
+# PHP extensions build dependencies
+RUN apk add --no-cache --virtual .build-deps \
+    $PHPIZE_DEPS \
+    curl-dev \
+    freetype-dev \
+    icu-dev \
+    libjpeg-turbo-dev \
+    libpng-dev \
+    libwebp-dev \
+    libxml2-dev \
+    libxpm-dev \
+    libxslt-dev \
+    libzip-dev \
+    linux-headers \
+    rabbitmq-c-dev \
+    zlib-dev \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
+    && docker-php-ext-install -j$(nproc) \
+        bcmath \
+        calendar \
+        ftp \
+        gd \
+        intl \
+        pdo_mysql \
+        soap \
+        sysvmsg \
+        sysvsem \
+        sysvshm \
+        xsl \
+        zip \
+    && pecl install xdebug amqp \
+    && docker-php-ext-enable xdebug amqp \
+    && apk del .build-deps \
+    && rm -rf /tmp/* /usr/local/lib/php/doc/* /var/cache/apk/*
 
-RUN docker-php-ext-install zip bcmath pdo_mysql gd intl calendar soap sysvmsg sysvsem sysvshm ftp xsl && \
-    pecl install xdebug amqp && \
-    docker-php-ext-enable xdebug amqp soap && \
-    docker-php-ext-configure intl
-
-RUN docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
-    && docker-php-ext-install -j$(nproc) gd
-
-RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
+# PHP config
+RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
 COPY php-camalo/symfony.ini $PHP_INI_DIR/conf.d/symfony.ini
 
-ENV LANG fr_FR.UTF-8
-ENV LC_ALL fr_FR.UTF-8
+# Composer
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# INSTALL COMPOSER
-RUN curl -s https://getcomposer.org/installer | php -- --install-dir=/usr/bin/ --filename=composer && \
-    alias composer='php /usr/bin/composer'
+# SSH known hosts for private repositories
+RUN mkdir -p /root/.ssh \
+    && ssh-keyscan github.com >> /root/.ssh/known_hosts
 
-RUN mkdir ~/.ssh && ssh-keyscan github.com >> ~/.ssh/known_hosts
+# Symfony CLI
+RUN wget https://get.symfony.com/cli/installer -O - | bash \
+    && mv /root/.symfony5/bin/symfony /usr/local/bin/symfony
 
-# INSTALL SYMFONY
-RUN wget https://get.symfony.com/cli/installer -O - | bash && \
-    mv /root/.symfony5/bin/symfony /usr/local/bin/symfony
+ENV LANG=fr_FR.UTF-8
+ENV LC_ALL=fr_FR.UTF-8
 
-# Set working directory
 WORKDIR /var/www/html
+
 RUN git config --global --add safe.directory /var/www/html
-
-RUN rm -rf /tmp/* /usr/local/lib/php/doc/* /var/cache/apk/*
-
-RUN apk del .build-deps && \
-    rm -rf /tmp/* /usr/local/lib/php/doc/* /var/cache/apk/*
