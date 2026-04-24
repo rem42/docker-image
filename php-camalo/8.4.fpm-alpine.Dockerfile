@@ -33,8 +33,8 @@ COPY --from=wkhtmltopdf /bin/libwkhtmltox* /usr/local/bin/
 
 # Install dependencies for PHP
 RUN apk upgrade --update && \
-    apk add --no-cache libssl3 git openssh make openssl bash zip mysql-client libpng libzip icu rabbitmq-c icu-data-full gcompat libxslt && \
-    apk add --no-cache --virtual .build-deps libxml2-dev rabbitmq-c-dev curl-dev libzip-dev libpng-dev icu-dev libjpeg-turbo-dev libwebp-dev zlib-dev freetype-dev libxpm-dev libxslt-dev $PHPIZE_DEPS && \
+    apk add --no-cache libssl3 git openssh make openssl bash zip mysql-client libpng libzip icu rabbitmq-c icu-data-full gcompat libxslt libjpeg-turbo-dev libwebp-dev zlib-dev freetype-dev libzip-dev libpng-dev && \
+    apk add --no-cache --virtual .build-deps libxml2-dev rabbitmq-c-dev curl-dev icu-dev libxpm-dev libxslt-dev $PHPIZE_DEPS && \
     apk add --update linux-headers
 
 RUN docker-php-ext-install zip bcmath pdo_mysql gd intl calendar soap sysvmsg sysvsem sysvshm ftp xsl && \
