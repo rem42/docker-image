@@ -92,9 +92,12 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 RUN mkdir -p /root/.ssh \
     && ssh-keyscan github.com >> /root/.ssh/known_hosts
 
-# Symfony CLI
-RUN wget https://get.symfony.com/cli/installer -O - | bash \
-    && mv /root/.symfony5/bin/symfony /usr/local/bin/symfony
+# Symfony CLI (latest stable)
+ARG TARGETARCH
+
+RUN wget https://github.com/symfony-cli/symfony-cli/releases/latest/download/symfony_linux_${TARGETARCH} \
+    -O /usr/local/bin/symfony \
+    && chmod +x /usr/local/bin/symfony
 
 ENV LANG=fr_FR.UTF-8
 ENV LC_ALL=fr_FR.UTF-8

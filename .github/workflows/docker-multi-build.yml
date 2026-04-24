@@ -32,7 +32,7 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v4
 
       - name: Log in to Docker Hub
         # AJOUT : La condition est maintenant ici
@@ -42,7 +42,7 @@ jobs:
             github.event.inputs.image_tag == 'all' ||
             github.event.inputs.image_tag == matrix.dockerfile.tag
           ))
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
@@ -55,7 +55,7 @@ jobs:
             github.event.inputs.image_tag == 'all' ||
             github.event.inputs.image_tag == matrix.dockerfile.tag
           ))
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: .
           file: ${{ matrix.dockerfile.path }}
