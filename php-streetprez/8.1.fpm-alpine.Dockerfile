@@ -23,7 +23,7 @@ RUN docker-php-ext-install zip pdo_mysql intl calendar soap sysvmsg sysvsem sysv
 
 # Configuration PHP de Production
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
-COPY symfony.ini $PHP_INI_DIR/conf.d/symfony.ini
+COPY php-streetprez/symfony.ini $PHP_INI_DIR/conf.d/symfony.ini
 
 # Installation de Composer
 RUN curl -s https://getcomposer.org/installer | php -- --install-dir=/usr/bin/ --filename=composer
