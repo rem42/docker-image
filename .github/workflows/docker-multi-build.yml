@@ -15,6 +15,7 @@ on:
           - 'rem42/php-camalo:8.4-fpm-alpine-latest'
           - 'rem42/php-camalo:8.5-fpm-alpine-latest'
           - 'rem42/php-streetprez:8.1-fpm-alpine-latest'
+          - 'rem42/php-streetprez:8.4-fpm-alpine-latest'
 
 jobs:
   build-and-push:
@@ -28,6 +29,7 @@ jobs:
           - { path: './php-camalo/8.4.fpm-alpine.Dockerfile', tag: 'rem42/php-camalo:8.4-fpm-alpine-latest', platforms: 'linux/amd64,linux/arm64' }
           - { path: './php-camalo/8.5.fpm-alpine.Dockerfile', tag: 'rem42/php-camalo:8.5-fpm-alpine-latest', platforms: 'linux/amd64,linux/arm64' }
           - { path: './php-streetprez/8.1.fpm-alpine.Dockerfile', tag: 'rem42/php-streetprez:8.1-fpm-alpine-latest', platforms: 'linux/amd64,linux/arm64' }
+          - { path: './php-streetprez/8.4.fpm-alpine.Dockerfile', tag: 'rem42/php-streetprez:8.4-fpm-alpine-latest', platforms: 'linux/amd64,linux/arm64' }
 
     steps:
       - name: Checkout repository
