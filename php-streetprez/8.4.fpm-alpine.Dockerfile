@@ -1,4 +1,4 @@
-FROM php:8.4-alpine-fpm
+FROM php:8.4-fpm-alpine
 
 # Installation des dépendances de production
 RUN apk upgrade --update && \
